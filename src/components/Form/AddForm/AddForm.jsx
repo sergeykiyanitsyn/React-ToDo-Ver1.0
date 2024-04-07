@@ -1,8 +1,10 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useState, useContext } from 'react'
+import { AppContext } from '../../context'
 import styles from './Form.module.css'
+import { URL, PATH } from '../../Constants/URL-constatns'
 
-export const AddForm = ({ setActionFlag, refreshTasks }) => {
+export const AddForm = () => {
+  const { setActionFlag, refreshTasks } = useContext(AppContext)
   const [title, setValueTitle] = useState('')
   const [description, setValueDescription] = useState('')
 
@@ -18,7 +20,7 @@ export const AddForm = ({ setActionFlag, refreshTasks }) => {
     event.preventDefault()
 
     if (title && description) {
-      fetch('http://localhost:3005/tasks', {
+      fetch(`${URL}/${PATH}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json; charset=utf-8' },
         body: JSON.stringify({
@@ -57,9 +59,4 @@ export const AddForm = ({ setActionFlag, refreshTasks }) => {
       </button>
     </form>
   )
-}
-
-AddForm.propTypes = {
-  setActionFlag: PropTypes.any,
-  refreshTasks: PropTypes.any,
 }

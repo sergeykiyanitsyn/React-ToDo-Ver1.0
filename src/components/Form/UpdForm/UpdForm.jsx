@@ -1,8 +1,10 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useState, useContext } from 'react'
+import { AppContext } from '../../context'
 import styles from './Form.module.css'
+import { URL, PATH } from '../../Constants/URL-constatns'
 
-export const UpdForm = ({ idTask, setActionFlag, refreshTasks }) => {
+export const UpdForm = () => {
+  const { idTask, setActionFlag, refreshTasks } = useContext(AppContext)
   const [title, setValueTitle] = useState('')
   const [description, setValueDescription] = useState('')
 
@@ -18,7 +20,7 @@ export const UpdForm = ({ idTask, setActionFlag, refreshTasks }) => {
     event.preventDefault()
 
     if (title && description) {
-      fetch(`http://localhost:3005/tasks/${idTask}`, {
+      fetch(`${URL}/${PATH}/${idTask}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json; charset=utf-8' },
         body: JSON.stringify({
@@ -57,10 +59,4 @@ export const UpdForm = ({ idTask, setActionFlag, refreshTasks }) => {
       </button>
     </form>
   )
-}
-
-UpdForm.propTypes = {
-  idTask: PropTypes.any,
-  setActionFlag: PropTypes.any,
-  refreshTasks: PropTypes.any,
 }

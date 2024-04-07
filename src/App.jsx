@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import styles from './App.module.css'
 import { AddFunctional, Form, Tasks, Loader, Buttons, Message } from './components'
+import { AppContext } from './components/context'
+import { URL, PATH } from './components/Constants/URL-constatns'
 
 //actionFlags: add - true, delete - false, update - null
 
@@ -15,7 +17,7 @@ const App = () => {
   const refreshTasks = () => {
     setIsLoading(true)
 
-    fetch('http://localhost:3005/tasks')
+    fetch(`${URL}/${PATH}`)
       .then((loadedData) => loadedData.json())
       .then((serverTasks) => {
         setTasks(serverTasks)
@@ -28,7 +30,7 @@ const App = () => {
   useEffect(() => {
     setIsLoading(true)
 
-    fetch('http://localhost:3005/tasks')
+    fetch(`${URL}/${PATH}`)
       .then((loadedData) => loadedData.json())
       .then((serverTasks) => setTasks(serverTasks))
       .finally(() => {
@@ -38,40 +40,29 @@ const App = () => {
 
   return (
     <>
-      <div className={styles.wrapper}>
-        <div className={styles.taskHeaders}> Лист задач </div>
-        <Buttons
-          actionFlag={actionFlag}
-          setActionFlag={setActionFlag}
-          setIdTask={setIdTask}
-        />
-        <Form
-          actionFlag={actionFlag}
-          setActionFlag={setActionFlag}
-          refreshTasks={refreshTasks}
-          idTask={idTask}
-        />
-        <Message id={idTask} actionFlag={actionFlag}></Message>
-        <AddFunctional
-          initialInputValue={initialInputValue}
-          setInitialInputValue={setInitialInputValue}
-          sortOn={sortOn}
-          setSortOn={setSortOn}
-        />
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Tasks
-            tasks={tasks}
-            initialInputValue={initialInputValue}
-            sortOn={sortOn}
-            actionFlag={actionFlag}
-            setActionFlag={setActionFlag}
-            refreshTasks={refreshTasks}
-            setIdTask={setIdTask}
-          />
-        )}
-      </div>
+      <AppContext.Provider
+        value={{
+          actionFlag,
+          setActionFlag,
+          idTask,
+          setIdTask,
+          refreshTasks,
+          initialInputValue,
+          setInitialInputValue,
+          sortOn,
+          setSortOn,
+          tasks,
+        }}
+      >
+        <div className={styles.wrapper}>
+          <div className={styles.taskHeaders}> Лист задач </div>
+          <Buttons />
+          <Form actionFlag={actionFlag} idTask={idTask} />
+          <Message actionFlag={actionFlag} id={idTask} />
+          <AddFunctional />
+          {isLoading ? <Loader /> : <Tasks />}
+        </div>
+      </AppContext.Provider>
     </>
   )
 }

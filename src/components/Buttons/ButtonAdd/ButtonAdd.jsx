@@ -1,7 +1,10 @@
 import styles from './Button.module.css'
-import PropTypes from 'prop-types'
+import { useContext } from 'react'
+import { AppContext } from '../../context'
 
-export const ButtonAdd = ({ actionFlag, setActionFlag }) => {
+export const ButtonAdd = () => {
+  const { actionFlag, setActionFlag } = useContext(AppContext)
+
   const handleClick = () => {
     if (actionFlag !== true) {
       setActionFlag(true)
@@ -22,9 +25,4 @@ export const ButtonAdd = ({ actionFlag, setActionFlag }) => {
       )}
     </>
   )
-}
-
-ButtonAdd.propTypes = {
-  actionFlag: PropTypes.any,
-  setActionFlag: PropTypes.any,
 }

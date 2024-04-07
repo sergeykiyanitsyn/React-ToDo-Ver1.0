@@ -1,41 +1,32 @@
+import { useContext } from 'react'
+import { AppContext } from '../context'
+import { searchTasks } from './hooks/search-tasks'
 import styles from './Task.module.css'
-import PropTypes from 'prop-types'
+import { URL, PATH } from '../Constants/URL-constatns'
 
-const isEmpty = ''
-
-const searchTasks = (tasks, searchWord) => {
-  const foundTasks = []
-  tasks.map((task) => {
-    const foundTask = task.description.toUpperCase().search(searchWord.toUpperCase())
-    if (foundTask !== -1) {
-      foundTasks.push(task)
-    }
-  })
-  return foundTasks
-}
-
-export const Tasks = ({
-  tasks,
-  initialInputValue,
-  sortOn,
-  actionFlag,
-  setActionFlag,
-  refreshTasks,
-  setIdTask,
-}) => {
+export const Tasks = () => {
+  const {
+    tasks,
+    initialInputValue,
+    sortOn,
+    actionFlag,
+    setActionFlag,
+    refreshTasks,
+    setIdTask,
+  } = useContext(AppContext)
   let newTasks = [...tasks]
 
-  if (sortOn === true) {
+  if (sortOn) {
     newTasks.sort((a, b) => a.title.localeCompare(b.title))
   }
 
-  if (initialInputValue !== isEmpty) {
+  if (initialInputValue) {
     newTasks = searchTasks(newTasks, initialInputValue)
   }
 
   const handleClick = (id) => {
     if (actionFlag === false) {
-      fetch(`http://localhost:3005/tasks/${id}`, {
+      fetch(`${URL}/${PATH}/${id}`, {
         method: 'DELETE',
       }).then(() => {
         refreshTasks()
@@ -53,8 +44,8 @@ export const Tasks = ({
           newTasks.map(({ id, title, description }) => {
             return (
               <div key={id} className={styles.note} onClick={() => handleClick(id)}>
-                {<div> {title} </div>}
-                {<div> {description} </div>}
+                <div> {title} </div>
+                <div> {description} </div>
               </div>
             )
           })
@@ -64,14 +55,4 @@ export const Tasks = ({
       </div>
     </>
   )
-}
-
-Tasks.propTypes = {
-  tasks: PropTypes.array,
-  initialInputValue: PropTypes.string,
-  sortOn: PropTypes.bool,
-  actionFlag: PropTypes.any,
-  setActionFlag: PropTypes.any,
-  refreshTasks: PropTypes.func,
-  setIdTask: PropTypes.any,
 }

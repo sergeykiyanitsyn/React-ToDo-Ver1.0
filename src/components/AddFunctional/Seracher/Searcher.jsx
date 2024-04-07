@@ -1,8 +1,10 @@
 import styles from './Searcher.module.css'
-import PropTypes from 'prop-types'
 import { useState } from 'react'
+import { useContext } from 'react'
+import { AppContext } from '../../context'
 
-export const Searcher = ({ initialInputValue, setInitialInputValue }) => {
+export const Searcher = () => {
+  const { initialInputValue, setInitialInputValue } = useContext(AppContext)
   const [inputText, setInputText] = useState(initialInputValue)
 
   const onChangeFinder = ({ target }) => {
@@ -29,9 +31,4 @@ export const Searcher = ({ initialInputValue, setInitialInputValue }) => {
       />
     </form>
   )
-}
-
-Searcher.propTypes = {
-  initialInputValue: PropTypes.any,
-  setInitialInputValue: PropTypes.any,
 }

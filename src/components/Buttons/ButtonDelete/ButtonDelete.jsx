@@ -1,7 +1,9 @@
 import styles from './Button.module.css'
-import PropTypes from 'prop-types'
+import { useContext } from 'react'
+import { AppContext } from '../../context'
 
-export const ButtonDelete = ({ actionFlag, setActionFlag }) => {
+export const ButtonDelete = () => {
+  const { actionFlag, setActionFlag } = useContext(AppContext)
   const handleClick = () => {
     if (actionFlag !== false) {
       setActionFlag(false)
@@ -23,9 +25,4 @@ export const ButtonDelete = ({ actionFlag, setActionFlag }) => {
       )}
     </>
   )
-}
-
-ButtonDelete.propTypes = {
-  actionFlag: PropTypes.any,
-  setActionFlag: PropTypes.any,
 }

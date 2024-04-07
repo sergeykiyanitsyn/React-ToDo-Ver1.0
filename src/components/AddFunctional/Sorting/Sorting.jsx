@@ -1,16 +1,15 @@
 import styles from './Sorting.module.css'
-import PropTypes from 'prop-types'
+import { useContext } from 'react'
+import { AppContext } from '../../context'
 
-export const Sorting = ({ sortOn, setSortOn }) => {
-  const onClickSort = () => {
-    setSortOn(!sortOn)
-  }
+export const Sorting = () => {
+  const { sortOn, setSortOn } = useContext(AppContext)
+  const onClickSort = () => setSortOn(!sortOn)
 
   return (
     <div className={styles.sorting}>
       <label htmlFor="sort">
-        {' '}
-        Сортировка по алфавиту{' '}
+        Сортировка по алфавиту
         <button
           className={styles.sortingButton}
           id="sort"
@@ -19,12 +18,7 @@ export const Sorting = ({ sortOn, setSortOn }) => {
         >
           {sortOn ? 'On' : 'Off'}
         </button>
-      </label>{' '}
+      </label>
     </div>
   )
-}
-
-Sorting.propTypes = {
-  sortOn: PropTypes.bool,
-  setSortOn: PropTypes.any,
 }
